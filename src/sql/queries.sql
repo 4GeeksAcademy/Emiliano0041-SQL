@@ -65,11 +65,12 @@ LIMIT 1;
 
 -- MISSION 5 ¿Qué especies han sido observadas con mayor frecuencia?
 -- Your query here:;
-SELECT  species.id, species.scientific_name, species.common_name, SUM(observations.count) AS species_frecuencia
+SELECT  species.id, species.scientific_name, species.common_name, COUNT(*) AS species_frecuencia
 FROM observations
 JOIN species ON observations.species_id = species.id
 GROUP BY species.id
 ORDER BY species_frecuencia DESC
+LIMIT 10
 
 ;
 
@@ -77,13 +78,33 @@ ORDER BY species_frecuencia DESC
 
 
 
--- MISSION 6
--- Your query here:
+-- MISSION 6 Queremos identificar a los observadores más activos. ¿Quiénes son las personas que más registros de observación han realizado?
+-- Your query here:;
+SELECT observations.observer, COUNT(*) AS total_observations
+FROM observations
+GROUP BY observations.observer
+ORDER BY total_observations DESC
+LIMIT 5;
+
+-- MISSION 7 ¿Qué especies no han sido observadas nunca? Comprueba si existen especies en la tabla species que no aparecen en observations
+-- Your query here;
+SELECT scientific_name, common_name
+FROM species
+LEFT JOIN observations ON observations.species_id = species.id
+WHERE observations.species_id IS NULL
+;
 
 
--- MISSION 7
--- Your query here:
+-- MISSION 8 ¿En qué fechas se observaron más especies distintas? Esta informacion es ideal para explorar la biodiversidad máxima en días específicos.
+-- Your query here;
+
+SELECT observations.observation_date, COUNT(DISTINCT observations.species_id) AS distinct_species
+FROM observations
+GROUP BY observations.observation_date
+ORDER BY distinct_species DESC
+LIMIT 5
 
 
--- MISSION 8
--- Your query here:
+
+
+;
